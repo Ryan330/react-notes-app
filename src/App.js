@@ -95,7 +95,14 @@ class App extends React.Component {
         };
 
         //Set Note
+        let notesArrayUpdate = [
+            ...this.getNoteFiltered(),
+            updatedNote
+        ];
 
+        this.setState({
+            notes: notesArrayUpdate
+        });
     }
 
 
