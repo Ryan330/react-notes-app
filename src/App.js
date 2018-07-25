@@ -85,6 +85,28 @@ class App extends React.Component {
     }
 
 
+    //Update Note Function
+    updateNote = (noteContent) => {
+        let theNote = this.getNote();
+
+        let updatedNote = {
+            ...theNote,
+            content: noteContent
+        };
+
+        //Set Note
+
+    }
+
+
+    //Select Filter Note
+    getNoteFiltered = () => {
+        let notesFiltered = this.state.notes.filter(note => note.id !== this.state.selectedID);
+
+        return (notesFiltered);
+    }
+
+
     //Click Note Function
     getNote = () => {
         let theNote = this.state.notes.find(note => note.id === this.state.selectedID);
@@ -97,6 +119,7 @@ class App extends React.Component {
     }
 
 
+    //Select Note Function
     selectNote = (noteID) => {
         console.log(noteID);
 
