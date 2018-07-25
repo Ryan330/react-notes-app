@@ -20,6 +20,7 @@ class App extends React.Component {
         super(props);
 
         this.state = {
+            searchText: "",
             selectID: -1,
             notes: [
                 {
@@ -52,7 +53,7 @@ class App extends React.Component {
 
 
                     {/*Search Bar*/}
-                    <SearchBar/>
+                    <SearchBar text={this.state.searchText} handleChange={this.updateSearch}/>
 
                 </header>
 
@@ -61,10 +62,10 @@ class App extends React.Component {
                 <div className="mainPageContainer">
 
                     {/*Notes List*/}
-                    <List allNotes={this.state.notes} handleSelection={this.selectNote}/>
+                    <List allNotes={this.getFilteredSearch()} handleSelection={this.selectNote}/>
 
                     {/*Notes Editor*/}
-                    <Editor note={this.getNote()}/>
+                    <Editor note={this.getNote()} handleChange={this.updateNote}/>
 
                 </div>
 
@@ -85,6 +86,14 @@ class App extends React.Component {
     }
 
 
+    //Note Change Check
+    componentDidMount() {
+        this.setState({
+            selectedID: this.state.notes[0].id
+        });
+    }
+
+
     //Update Note Function
     updateNote = (noteContent) => {
         let theNote = this.getNote();
@@ -96,8 +105,8 @@ class App extends React.Component {
 
         //Set Note
         let notesArrayUpdate = [
-            ...this.getNoteFiltered(),
-            updatedNote
+            updatedNote,
+            ...this.getNoteFiltered()
         ];
 
         this.setState({
@@ -108,6 +117,11 @@ class App extends React.Component {
 
     //Select Filter Note
     getNoteFiltered = () => {
+        let selectedID = this.state.selectedID;
+        if (selectedID === -1) {
+            selectedID = this.state.notes[0].id;
+        }
+
         let notesFiltered = this.state.notes.filter(note => note.id !== this.state.selectedID);
 
         return (notesFiltered);
@@ -128,11 +142,40 @@ class App extends React.Component {
 
     //Select Note Function
     selectNote = (noteID) => {
-        console.log(noteID);
-
         this.setState({
-            selectID: noteID
+            selectedID: noteID
         });
+    }
+
+
+
+
+    //Search Bar Function
+    updateSearch = (newText) => {
+        this.setState({
+            searchText: newText
+        });
+    }
+
+
+    //Filter Search
+    getFilteredSearch = () => {
+        //Filtered Notes
+        if (this.state.searchText !== "") {
+            let filteredNotes = this.state.notes.filter(note => {
+                let titleMatch = note.title.toLowerCase().includes(this.state.searchText.toLowerCase());
+
+                let contentMatch = note.content.toLowerCase().includes(this.state.searchText.toLowerCase());
+
+                
+                return (titleMatch || contentMatch);
+            });
+            return (filteredNotes);
+        }
+        else {
+            //All Notes
+            return (this.state.notes);
+        }
     }
 }
 

@@ -10,7 +10,7 @@ class SearchBar extends React.Component {
         return (
             <div className="customHeaderRight">
 
-                <input className="searchBar" type="text" placeholder="Search"/>
+                <input className="searchBar" type="text" value={this.props.text} placeholder="Search" onChange={(event) => {this.props.handleChange(event.target.value)}}/>
 
             </div>
         );

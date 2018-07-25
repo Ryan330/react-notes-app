@@ -10,7 +10,7 @@ class Editor extends React.Component {
         return (
             <div className="mainPageContainerRight">
 
-                <textarea value={this.props.note.content}/>
+                <textarea value={this.props.note.content} onChange={(event) => {this.props.handleChange(event.target.value)}}/>
             
             </div>
         );
